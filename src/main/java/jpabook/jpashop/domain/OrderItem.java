@@ -1,5 +1,7 @@
 package jpabook.jpashop.domain;
 
+import org.hibernate.mapping.Join;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,10 +9,14 @@ public class OrderItem {
     @Id @GeneratedValue
     @Column(name="ORDER_ITEM_ID")
     private Long id;
+
+    @ManyToOne
     @Column(name="ORDER_ID")
-    private Long orderID;
-    @Column(name="ITME_ID")
-    private Long itemId;
+    private Order order;
+
+    @ManyToOne
+    @JoinColumn(name="ITEM_ID")
+    private Item item;
 
     private int orderPrice;
     private int count;
@@ -23,20 +29,20 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getOrderID() {
-        return orderID;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrderID(Long orderID) {
-        this.orderID = orderID;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Item getItem() {
+        return item;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setItem(Item item) {
+        this.item = item;
     }
 
     public int getOrderPrice() {

@@ -1,7 +1,11 @@
 package jpabook.jpashop.domain;
 
+import org.hibernate.sql.ordering.antlr.OrderByTemplateTokenTypes;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="Orders") // table명은 orders (예약어 order 때문에)
@@ -9,20 +13,22 @@ public class Order {
     @Id @GeneratedValue
     @Column(name="ORDER_ID")
     private Long id;
-    @Column(name="MEMBER_ID")
-    private Long memberid; // => 객체 지향적인 설계가 아니다
-/*
+    // 하나의 주문에는 하나의 사용자 매핑
+    @ManyToOne
+    @JoinColumn(name="MEMBER_ID")
+    private Member member;
 
-현재 방식은 객체 설계를 테이블 설계에 맞춘 방식
-테이블의 외래키를 객체에 그대로 가져옴
-객체 그래프 탐색이 불가능
-참조가 없으므로 UML도 잘못됨
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
- */
     private LocalDateTime orderDate;
-
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+
+    public void addOrderItem(OrderItem orderItem){
+        orderItems.add(orderItem);
+        orderItem.setOrder(this); // 양방향 연관관계
+    }
 
     public Long getId() {
         return id;
@@ -32,12 +38,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getMemberid() {
-        return memberid;
+    public Member getMember() {
+        return member;
     }
 
-    public void setMemberid(Long memberid) {
-        this.memberid = memberid;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public LocalDateTime getOrderDate() {
