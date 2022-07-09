@@ -1,7 +1,5 @@
 package jpabook.jpashop.domain;
 
-import org.hibernate.sql.ordering.antlr.OrderByTemplateTokenTypes;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,19 +7,25 @@ import java.util.List;
 
 @Entity
 @Table(name="Orders") // table명은 orders (예약어 order 때문에)
-public class Order {
+public class Order extends BaseEntity{
     @Id @GeneratedValue
     @Column(name="ORDER_ID")
     private Long id;
     // 하나의 주문에는 하나의 사용자 매핑
     @ManyToOne
+    //order는 member_id를 외래키로 가짐
     @JoinColumn(name="MEMBER_ID")
     private Member member;
+
+    @OneToOne
+    @JoinColumn(name="DELIVERY_ID")
+    private Delivery delivery;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
 

@@ -1,17 +1,19 @@
 package jpabook.jpashop.domain;
 
-import org.hibernate.mapping.Join;
 
 import javax.persistence.*;
 
+
+
+
 @Entity
-public class OrderItem {
+public class OrderItem extends BaseEntity{
     @Id @GeneratedValue
     @Column(name="ORDER_ITEM_ID")
     private Long id;
 
     @ManyToOne
-    @Column(name="ORDER_ID")
+    @JoinColumn(name="ORDER_ID")
     private Order order;
 
     @ManyToOne

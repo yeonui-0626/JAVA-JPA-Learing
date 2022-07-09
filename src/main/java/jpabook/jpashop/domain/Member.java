@@ -5,17 +5,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member {
+public class Member extends BaseEntity{
 
     @Id @GeneratedValue
-    @Column(name="MEMBER_ID")
+    @Column(name="MEMBER_ID") //MEMBER_ID : DB 칼럼 이름
     private Long id;
     private String name;
     private String city;
     private String street;
     private String zipCode;
 
-    @OneToMany(mappedBy = "member") // 저쪽의 member(외래키)
+    @OneToMany(mappedBy = "member") // order 외래키로 지정된 변수명
     private List<Order> orders = new ArrayList<>();
 
     public Long getId() {
