@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name="Orders") // table명은 orders (예약어 order 때문에)
 public class Order extends BaseEntity{
@@ -12,16 +14,16 @@ public class Order extends BaseEntity{
     @Column(name="ORDER_ID")
     private Long id;
     // 하나의 주문에는 하나의 사용자 매핑
-    @ManyToOne
+    @ManyToOne( fetch=LAZY)
     //order는 member_id를 외래키로 가짐
     @JoinColumn(name="MEMBER_ID")
     private Member member;
 
-    @OneToOne
+    @OneToOne( fetch=LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="DELIVERY_ID")
     private Delivery delivery;
 
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 
     private LocalDateTime orderDate;
